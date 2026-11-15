@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Uno Studio connector for Claude Code.
+"""Uno Studio local MCP connector for Claude Desktop and Claude Code.
 
 Finds the Uno Studio folder on this computer and runs Uno's OWN MCP server (mcp/uno_studio_mcp.py, shipped with Uno).
 This file contains no Uno app code. It never edits projects itself; Uno's server saves every change as a new version.
@@ -26,7 +26,7 @@ import subprocess
 import sys
 import time
 
-VERSION = "1.0.2"
+VERSION = "1.1.0"
 HOME = os.path.expanduser("~")
 CONF = os.path.join(HOME, ".uno-studio-connector.json")
 
