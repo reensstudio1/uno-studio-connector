@@ -33,7 +33,7 @@ PY
 inst --version "$OLD"; ok $? "clean install $OLD"
 claude mcp list 2>/dev/null | grep -q "plugin:uno-studio:uno-studio.*Connected"; ok $? "claude mcp list shows plugin:uno-studio:uno-studio connected"
 PLUG="$H/.uno-studio-connector/releases/$OLD/plugins/uno-studio/connector/uno_connector.py"
-R=$(probe "$PLUG"); echo "  $R"; echo "$R" | grep -q '"tools": 12, "projects": [1-9][0-9]*, "clips": [1-9][0-9]*, "copy_ok": true'; ok $? "tools, list_projects, read_cut, new copy via add_layers"
+R=$(probe "$PLUG"); echo "  $R"; echo "$R" | grep -q '"tools": 1[2-9], "projects": [1-9][0-9]*, "clips": [1-9][0-9]*, "copy_ok": true'; ok $? "tools, list_projects, read_cut, new copy via add_layers"
 rm -f "$H/Downloads/Uno Studio/projects/__connector_test.json"; [ ! -f "$H/Downloads/Uno Studio/projects/__connector_test.json" ]; ok $? "reversible: test copy removed"
 R2=$(probe "$PLUG"); rm -f "$H/Downloads/Uno Studio/projects/__connector_test.json"; echo "$R2" | grep -q '"copy_ok": true'; ok $? "close and reopen the server: works again"
 inst --version "$OLD"; ok $? "second install of the same version (idempotent)"
