@@ -1,6 +1,6 @@
 {
   "name": "uno-studio",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Uno Studio connector: Claude Code tools for the Uno Studio editor on this computer. Uses the Uno installation you already have — no app code, projects or media are included.",
   "author": {
     "name": "REENS Studio"

@@ -26,13 +26,25 @@ import subprocess
 import sys
 import time
 
-VERSION = "1.0.1"
+VERSION = "1.0.2"
 HOME = os.path.expanduser("~")
 CONF = os.path.join(HOME, ".uno-studio-connector.json")
 
 
 def valid(root):
     return bool(root) and os.path.isfile(os.path.join(root, "server.py")) and os.path.isfile(os.path.join(root, "mcp", "uno_studio_mcp.py"))
+
+
+SKIP = ("/backups/", "/.Trash/", "/.dev-test/", "/private/tmp/", "/private/var/folders/", "/var/folders/", "/Library/Caches/")
+
+
+def looks_installed(root):
+    """תיקייה שנמצאה בחיפוש (לא נבחרה במפורש): לא גיבוי / סל / זמני, ויש בה פרויקטים ואפליקציה או active-root."""
+    r = root.rstrip("/") + "/"
+    inside_home = r.startswith(os.path.realpath(HOME).rstrip("/") + "/") or r.startswith(HOME.rstrip("/") + "/")
+    if any(x in (r[len(HOME):] if inside_home else r) for x in SKIP):
+        return False
+    return os.path.isdir(os.path.join(root, "projects")) and (os.path.isdir(os.path.join(root, "Uno Studio.app")) or os.path.isdir(os.path.join(root, "drafts")))
 
 
 def candidates():
@@ -49,7 +61,7 @@ def candidates():
         yield base, os.path.join(base, "Uno Studio")
         for p in sorted(glob.glob(os.path.join(base, "*", "Uno Studio"))):
             yield base, p
-    if sys.platform == "darwin" and shutil.which("mdfind"):
+    if sys.platform == "darwin" and shutil.which("mdfind") and not os.environ.get("UNO_CONNECTOR_NO_SPOTLIGHT"):
         try:
             out = subprocess.run(["mdfind", "-name", "uno_studio_mcp.py"], capture_output=True, text=True, timeout=4).stdout
             for line in out.splitlines():
@@ -65,8 +77,11 @@ def find_root():
         if not root:
             continue
         root = os.path.abspath(os.path.expanduser(root))
-        if "/.Trash/" in root or root.startswith(("/private/var/folders/", "/var/folders/")):
-            continue          # סל המחזור / אפליקציה שהופעלה ישירות מתוך zip (App Translocation)
+        explicit = how in ("env UNO_STUDIO_ROOT", "~/.uno-studio-connector.json", "Uno active-root")
+        if not explicit and not looks_installed(root):
+            if valid(root):
+                tried.append(root + " (skipped: backup/temporary copy)")
+            continue          # גיבויים, סל, תיקיות זמניות (כולל App Translocation) — לא מתחברים אליהם בטעות
         if valid(root):
             return root, how, tried
         tried.append(root)

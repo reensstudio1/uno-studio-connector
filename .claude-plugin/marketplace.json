@@ -5,14 +5,14 @@
   },
   "metadata": {
     "description": "Uno Studio connector for Claude Code",
-    "version": "1.0.1"
+    "version": "1.0.2"
   },
   "plugins": [
     {
       "name": "uno-studio",
       "source": "./plugins/uno-studio",
       "description": "Connects Claude Code to the Uno Studio editor installed on this computer (list, read and version your cuts).",
-      "version": "1.0.1"
+      "version": "1.0.2"
     }
   ]
 }
