@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "uno-studio": {
+      "command": "python3",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/connector/uno_connector.py"]
+    }
+  }
+}
