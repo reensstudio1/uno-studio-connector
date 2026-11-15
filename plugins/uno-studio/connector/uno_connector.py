@@ -26,7 +26,7 @@ import subprocess
 import sys
 import time
 
-VERSION = "1.0.0"
+VERSION = "1.0.1"
 HOME = os.path.expanduser("~")
 CONF = os.path.join(HOME, ".uno-studio-connector.json")
 

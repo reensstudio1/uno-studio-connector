@@ -38,7 +38,7 @@ say "→ version $REF${CUR:+ (installed now: $CUR)}"
 # 3. הורדת הגרסה (פעם אחת לכל גרסה)
 DEST="$HOMEDIR/releases/$REF"
 if [ ! -f "$DEST/.claude-plugin/marketplace.json" ]; then
-  rm -rf "$DEST.tmp"; git clone -q --depth 1 --branch "$REF" "$SRC" "$DEST.tmp" && mv "$DEST.tmp" "$DEST"
+  rm -rf "$DEST.tmp"; git -c advice.detachedHead=false clone -q --depth 1 --branch "$REF" "$SRC" "$DEST.tmp" && mv "$DEST.tmp" "$DEST"
 fi
 
 # 4. גיבוי לפני שינוי
